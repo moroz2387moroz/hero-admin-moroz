@@ -13,11 +13,13 @@
     "react-dom": "^18.3.1",
     "react-redux": "^9.1.2",
     "react-scripts": "^5.0.1",
+    "react-transition-group": "^4.4.5",
+    "reselect": "^5.3.0",
     "sass": "^1.77.2",
     "uuid": "^9.0.1"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "concurrently \"react-scripts start\" \"json-server --watch src/data/heroes.json --port 3001\"",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
