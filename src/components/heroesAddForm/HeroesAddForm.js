@@ -4,6 +4,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { v4 as uuidv4 } from 'uuid';
 
 import { heroCreated } from '../../actions';
+import { HEROES_API_URL } from '../../constants';
+import { useHttp } from '../../hooks/http.hook';
 
 const elementNames = {
     fire: 'Огонь',
@@ -16,12 +18,17 @@ const HeroesAddForm = () => {
     const [name, setName] = useState('');
     const [description, setDescription] = useState('');
     const [element, setElement] = useState('');
+    const [error, setError] = useState('');
+    const [isSubmitting, setIsSubmitting] = useState(false);
     const dispatch = useDispatch();
+    const {request} = useHttp();
     const filters = useSelector(state => state.filters);
     const elements = filters.filter(filter => filter !== 'all');
 
-    const onSubmit = (event) => {
+    const onSubmit = async (event) => {
         event.preventDefault();
+        setError('');
+        setIsSubmitting(true);
 
         const newHero = {
             id: uuidv4(),
@@ -30,11 +37,18 @@ const HeroesAddForm = () => {
             element
         };
 
-        dispatch(heroCreated(newHero));
+        try {
+            const createdHero = await request(HEROES_API_URL, 'POST', JSON.stringify(newHero));
+            dispatch(heroCreated(createdHero));
 
-        setName('');
-        setDescription('');
-        setElement('');
+            setName('');
+            setDescription('');
+            setElement('');
+        } catch (requestError) {
+            setError(`Не удалось создать героя: ${requestError.message}`);
+        } finally {
+            setIsSubmitting(false);
+        }
     }
 
     return (
@@ -83,7 +97,10 @@ const HeroesAddForm = () => {
                 </select>
             </div>
 
-            <button type="submit" className="btn btn-primary">Создать</button>
+            {error && <p className="text-danger mt-3 mb-0" role="alert">{error}</p>}
+            <button type="submit" className="btn btn-primary" disabled={isSubmitting}>
+                {isSubmitting ? 'Создание...' : 'Создать'}
+            </button>
         </form>
     )
 }

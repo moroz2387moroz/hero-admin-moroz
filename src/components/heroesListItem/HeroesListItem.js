@@ -1,4 +1,4 @@
-const HeroesListItem = ({ id, name, description, element, onDelete }) => {
+const HeroesListItem = ({ id, name, description, element, onDelete, isDeleting }) => {
 	let elementClassName;
 
 	switch (element) {
@@ -35,8 +35,9 @@ const HeroesListItem = ({ id, name, description, element, onDelete }) => {
 			<span className="position-absolute top-0 start-100 translate-middle badge border rounded-pill bg-light">
 				<button
 					type="button"
-					className="btn-close btn-close"
+					className="btn-close"
 					aria-label="Close"
+					disabled={isDeleting}
 					onClick={() => onDelete(id)}
 				></button>
 			</span>

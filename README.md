@@ -1,1 +1,7 @@
-This is test project with hero admin panel!
+Запуск панели и JSON API:
+
+```sh
+npm start
+```
+
+`json-server` читает и изменяет `src/data/heroes.json`: создание героя отправляет `POST /heroes`, удаление — `DELETE /heroes/:id`. Панель доступна на порту 3000, API — на порту 3001. Фильтры позволяют показывать всех героев или выбрать одну из стихий.
