@@ -4,7 +4,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
 import { createSelector } from "reselect";
 
-import { fetchHeroes, heroDeleted } from "../../actions";
+import { fetchHeroes } from "../../actions";
+import { heroDeleted } from "./heroesSlice";
+
 import HeroesListItem from "../heroesListItem/HeroesListItem";
 import Spinner from "../spinner/Spinner";
 
@@ -38,12 +40,10 @@ const HeroesList = () => {
   const onDelete = useCallback(
     (id) => {
       request(`http://localhost:3001/heroes/${id}`, "DELETE")
-        .then((data) => console.log(data, "Deleted"))
-        .then(dispatch(heroDeleted(id)))
-        .catch((err) => console.log(err));
-      // eslint-disable-next-line
+        .then(() => dispatch(heroDeleted(id)))
+        .catch((error) => console.error("Не удалось удалить героя", error));
     },
-    [request],
+    [dispatch, request],
   );
 
   if (heroesLoadingStatus === "loading") {
