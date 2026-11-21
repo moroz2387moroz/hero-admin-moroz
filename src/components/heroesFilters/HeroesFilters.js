@@ -1,14 +1,9 @@
-import { useDispatch, useSelector } from "react-redux";
+import { useHttp } from "../../hooks/http.hook";
 import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import classNames from "classnames";
 
-import { useHttp } from "../../hooks/http.hook";
-import {
-  filtersFetching,
-  filtersFetched,
-  filtersFetchingError,
-  activeFilterChanged,
-} from "../../actions";
+import { fetchFilters, activeFilterChanged } from "../../actions";
 import Spinner from "../spinner/Spinner";
 
 const HeroesFilters = () => {
@@ -19,21 +14,15 @@ const HeroesFilters = () => {
   const { request } = useHttp();
 
   useEffect(() => {
-    dispatch(filtersFetching());
-    request("http://localhost:3001/filters")
-      .then((data) => dispatch(filtersFetched(data)))
-      .catch((error) => {
-        console.error("Не удалось загрузить фильтры", error);
-        dispatch(filtersFetchingError());
-      });
-  }, [dispatch, request]);
+    dispatch(fetchFilters(request));
 
-  if (filtersLoadingStatus === "loading" || filtersLoadingStatus === "idle") {
+    // eslint-disable-next-line
+  }, []);
+
+  if (filtersLoadingStatus === "loading") {
     return <Spinner />;
-  }
-
-  if (filtersLoadingStatus === "error") {
-    return <h5 className="text-center mt-5">Ошибка загрузки фильтров</h5>;
+  } else if (filtersLoadingStatus === "error") {
+    return <h5 className="text-center mt-5">Ошибка загрузки</h5>;
   }
 
   const renderFilters = (arr) => {
@@ -50,7 +39,6 @@ const HeroesFilters = () => {
         <button
           key={name}
           id={name}
-          type="button"
           className={btnClass}
           onClick={() => dispatch(activeFilterChanged(name))}
         >

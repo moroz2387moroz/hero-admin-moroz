@@ -1,3 +1,5 @@
+import heroImage from "../../assets/hero_bg.jpg";
+
 const HeroesListItem = ({ id, name, description, element, onDelete }) => {
 	let elementClassName;
 
@@ -23,7 +25,7 @@ const HeroesListItem = ({ id, name, description, element, onDelete }) => {
 			className={`card flex-row mb-4 shadow-lg text-white ${elementClassName}`}
 		>
 			<img
-				src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/bc/Unknown_person.jpg/1200px-Unknown_person.jpg"
+				src={heroImage}
 				className="img-fluid w-25 d-inline"
 				alt="unknown hero"
 				style={{ objectFit: "cover" }}

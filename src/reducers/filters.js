@@ -15,7 +15,7 @@ const filters = (state = initialState, action) => {
       return {
         ...state,
         filters: action.payload,
-        filtersLoadingStatus: "idle",
+        filtersLoadingStatus: "success",
       };
     case "FILTERS_FETCHING_ERROR":
       return {

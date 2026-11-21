@@ -14,7 +14,7 @@ const heroes = (state = initialState, action) => {
       return {
         ...state,
         heroes: action.payload,
-        heroesLoadingStatus: "idle",
+        heroesLoadingStatus: "success",
       };
     case "HEROES_FETCHING_ERROR":
       return {
